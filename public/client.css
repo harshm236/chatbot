@@ -1,0 +1,8 @@
+.incoming{
+    color: red;
+    text-align: left;
+}
+.outgoing{
+    color: green;
+    text-align: right;
+}

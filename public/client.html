@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./client.css" class="css">
+    <title>chat bot</title>
+    <script>
+      const name = prompt("enter your name");
+    </script>
+  </head>
+  <body>
+    <h1>CHAT BOT</h1>
+    <div id="test">hello</div>
+      <input
+        id="outgoing"
+        type="text"
+        placeholder="enter your message"
+        required
+      />
+      <button onclick="{ClickHandler()}">send</button>
+    
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const test = document.getElementById("test");
+      var outgoing ;
+      const socket = io();
+      socket.emit("username", name);
+      socket.on("user left",(user)=>{
+        const div = document.createElement("div")
+        div.innerText=`${name}${user}`
+        test.appendChild(div)
+      })
+        socket.on("user join",(msg)=>{
+            const div = document.createElement("div");
+          div.innerText = `${msg}`;
+          test.appendChild(div);
+        })
+        socket.on("sending",(msg)=>{
+            const div = document.createElement("div");
+          div.className="incoming"
+          div.innerText = `${msg}`;
+          test.appendChild(div);
+        })
+        socket.on("my msg",(msg)=>{
+            const div = document.createElement("div");
+          div.className="outgoing"
+          div.innerText = `${msg}`;
+          test.appendChild(div);
+        })
+          const ClickHandler=()=>{
+                
+              outgoing= document.getElementById("outgoing").value
+              console.log(outgoing)
+              socket.emit("outgoing",`${name}==>${outgoing}`)   
+              document.getElementById("outgoing").value=" "
+
+            }
+            </script>
+  </body>
+</html>
